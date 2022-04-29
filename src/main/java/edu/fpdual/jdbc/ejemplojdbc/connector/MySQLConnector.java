@@ -4,9 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.Properties;
 
 /**
@@ -67,6 +65,19 @@ public class MySQLConnector {
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
         MySQLConnector connector = new MySQLConnector();
         Connection connection = connector.getMySQLConnection();
+
+        Statement stm = connection.createStatement();
+
+        stm.executeUpdate("UPDATE city SET District = 'Kabol' WHERE ID = 1;");
+        stm.executeUpdate("INSERT INTO city VALUES(4080, 'Málaga', 'ESP', 'Andalusia', 1694000);");
+
+        ResultSet result = stm.executeQuery("SELECT ID, Name, District FROM world.city WHERE CountryCode = 'ESP';");
+        result.beforeFirst();
+
+
+        stm.close();
+        connection.close();
+
         System.out.println(connection.getCatalog());
     }
 }
